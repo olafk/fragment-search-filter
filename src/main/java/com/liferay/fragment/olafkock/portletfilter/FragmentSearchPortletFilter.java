@@ -99,7 +99,13 @@ public class FragmentSearchPortletFilter implements RenderFilter {
 		long globalId = themeDisplay.getCompanyGroupId();
 		HttpServletRequest originalServletRequest = PortalUtil.getOriginalServletRequest(themeDisplay.getRequest());
 		String uri = originalServletRequest.getRequestURI();
-		uri = uri.substring(0, uri.indexOf('-')+1);
+		if(uri.indexOf("/-/")>0) {
+			uri = uri.substring(0, uri.indexOf("/-/")+2);
+		} else if(uri.indexOf("/~/")>0) {
+			uri = uri.substring(0, uri.indexOf("/~/")+2);
+		} else {
+			return "";
+		}
 		String queryString = "?_" + FragmentPortletKeys.FRAGMENT + "_keywords="
 							+ HtmlUtil.escape(searchTerm); // works without p_p_auth
 
