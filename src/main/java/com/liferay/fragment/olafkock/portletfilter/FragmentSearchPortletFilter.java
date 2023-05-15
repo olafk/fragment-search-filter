@@ -13,6 +13,7 @@ import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -76,18 +77,21 @@ public class FragmentSearchPortletFilter implements RenderFilter {
 		String text = renderResponseWrapper.toString();
 		
 		if (text != null) {
+			PrintWriter writer = response.getWriter();
 			String interestingText = "id=\"_com_liferay_fragment_web_portlet_FragmentPortlet_fragmentEntries"+key+"PrimaryKeys\"";
 
 			int index = text.lastIndexOf(interestingText);
 			if (index >= 0) {
 				int formEndIndex = text.indexOf("</form>", index) + "</form>".length();
-				String newText1 = text.substring(0, formEndIndex);
-				String newText2 = "\n<h2>Also found in</h2>\n" + more;
-				String newText3 = text.substring(formEndIndex);
-				
-				String newText = newText1 + newText2 + newText3;
-				
-				response.getWriter().write(newText);
+				writer.write(text.substring(0, formEndIndex));
+				writer.write("\n<h2>Also found in</h2>\n" + more);
+				writer.write(text.substring(formEndIndex));
+			} else {
+				// something in the DOM has changed since this plugin was written.
+				// just tail the custom output to the end - it will look weird, but 
+				// likely will still work.
+				writer.write(text);
+				writer.write("\n<h2>Also found in</h2>\n" + more);
 			}
 		}
 	}
