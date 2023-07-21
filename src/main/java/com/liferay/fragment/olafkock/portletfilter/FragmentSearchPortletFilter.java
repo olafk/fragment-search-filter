@@ -120,7 +120,8 @@ public class FragmentSearchPortletFilter implements RenderFilter {
 		if(globalCollection!=null) {
 			fragmentCollections.addAll(globalCollection);
 		}
-
+		
+		searchTerm = searchTerm.toLowerCase();
 		List<FragmentCollectionContributor> contributors = _fragmentCollectionContributorRegistry.getFragmentCollectionContributors();
 
 		for (FragmentCollection collection : fragmentCollections) {
@@ -129,7 +130,7 @@ public class FragmentSearchPortletFilter implements RenderFilter {
 			}
 			List<FragmentEntry> fragmentEntries = fragmentEntryLocalService.getFragmentEntries(collection.getPrimaryKey());
 			for (FragmentEntry fragmentEntry : fragmentEntries) {
-				if(fragmentEntry.getName().toLowerCase().indexOf(searchTerm.toLowerCase())>=0) {
+				if(fragmentEntry.getName().toLowerCase().indexOf(searchTerm)>=0) {
 					result.append("<li>")
 					.append("<a href=\"")
 					.append(uri)
@@ -158,7 +159,7 @@ public class FragmentSearchPortletFilter implements RenderFilter {
 			}
 			List<FragmentEntry> fragmentEntries = contributor.getFragmentEntries();
 			for (FragmentEntry fragmentEntry : fragmentEntries) {
-				if(fragmentEntry.getName().indexOf(searchTerm)>=0) {
+				if(fragmentEntry.getName().toLowerCase().indexOf(searchTerm)>=0) {
 					result.append("<li>")
 					.append(fragmentEntry.getName())
 					.append(" from ")
