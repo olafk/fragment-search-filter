@@ -40,6 +40,8 @@ import org.osgi.service.component.annotations.Reference;
  * 
  * Very crude UI
  * 
+ * Assumption: Nobody will ever need more than 640 fragment collections (sic!)
+ * 
  * @author Olaf Kock
  */
 @Component(
@@ -120,12 +122,12 @@ public class FragmentSearchPortletFilter implements RenderFilter {
 
 		
 		List<FragmentCollection> fragmentCollections = new LinkedList<FragmentCollection>(); 
-		fragmentCollections.addAll(_fragmentCollectionLocalService.getFragmentCollections(groupId, 0, 100));
-		List<FragmentCollection> globalCollection = _fragmentCollectionLocalService.getFragmentCollections(globalId, 0, 100);
+		fragmentCollections.addAll(_fragmentCollectionLocalService.getFragmentCollections(groupId, 0, 640));
+		List<FragmentCollection> globalCollection = _fragmentCollectionLocalService.getFragmentCollections(globalId, 0, 640);
 		if(globalCollection!=null) {
 			fragmentCollections.addAll(globalCollection);
 		}
-		List<FragmentCollection> otherFragmentCollections = _fragmentCollectionLocalService.getFragmentCollections(0, 100);
+		List<FragmentCollection> otherFragmentCollections = _fragmentCollectionLocalService.getFragmentCollections(0, 640);
 		otherFragmentCollections = new LinkedList<FragmentCollection>(otherFragmentCollections);
 		for (Iterator<FragmentCollection> iterator = otherFragmentCollections.iterator(); iterator.hasNext();) {
 			FragmentCollection fc = iterator.next();
@@ -139,14 +141,14 @@ public class FragmentSearchPortletFilter implements RenderFilter {
 		
 		String part = fragmentCollectionToLI(searchTerm, exclude, themeDisplay, groupId, globalId, uri, queryString, fragmentCollections);
 		if(part.length()>8) {
-			result.append("<h3>Fragment Collections <i>in this site</i></h3><ul>")
+			result.append("<h3>Fragment Collections <i>in this site or global</i></h3><ul>")
 			.append(part)
 			.append("</ul>");
 		}
 		
 		part = contributorsToLI(searchTerm, exclude, uri, queryString, contributors);
 		if(part.length()>8) {
-			result.append("<h3>Fragment Collections Contributors <i>(not editable)</i></h3><ul>")
+			result.append("<h3>Fragment Collections Contributors</h3><p><i>(note: not editable)</i></p><ul>")
 			.append(part)
 			.append("</ul>");
 		}

@@ -26,3 +26,4 @@ The "Also found in" section is the contribution of this plugin
 * The plugin is hardcoded with english text
 * It'd be nice to get a full UI with thumbnails for the other results. See introductory paragraph why this has not been attempted in an external module
 * As it's a portlet filter that detects known markup from the original portlet, it might break any time that the original portlet changes its HTML markup.
+* "Nobody will ever need more than 640 fragment collections" (hardcoded limit - so that it runs on DOS)
