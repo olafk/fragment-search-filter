@@ -58,6 +58,7 @@ public class FragmentSearchPortletFilter implements RenderFilter {
 	public void destroy() {
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void doFilter(RenderRequest request, RenderResponse response, FilterChain chain)
 			throws IOException, PortletException {
